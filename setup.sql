@@ -44,16 +44,18 @@ CREATE TABLE IF NOT EXISTS recipes (
         FOREIGN KEY (category_id) REFERENCES categories(category_id)
 );
 
--- 4) Comments / ratings (username stores the login taken from the session)
+-- 4) Comments / ratings (author referenced by user_id -> users)
 CREATE TABLE IF NOT EXISTS comments (
     comment_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     recipe_id INT UNSIGNED NOT NULL,
-    username VARCHAR(50) NOT NULL,
+    user_id INT UNSIGNED NOT NULL,
     rating TINYINT UNSIGNED NOT NULL,               -- 1..5 stars
     content TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_comments_recipe
-        FOREIGN KEY (recipe_id) REFERENCES recipes(recipe_id) ON DELETE CASCADE
+        FOREIGN KEY (recipe_id) REFERENCES recipes(recipe_id) ON DELETE CASCADE,
+    CONSTRAINT fk_comments_user
+        FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 -- 5) Favorites: links each user with the recipes they marked as favorite

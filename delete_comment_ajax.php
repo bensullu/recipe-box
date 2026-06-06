@@ -23,10 +23,9 @@ if ($comment_id <= 0 || $user_id <= 0) {
 
 // Confirm that this comment belongs to the current user before deleting it.
 $check_stmt = $conn->prepare(
-    "SELECT cm.comment_id
-     FROM comments cm
-     INNER JOIN users u ON u.login = cm.username
-     WHERE cm.comment_id = ? AND u.user_id = ?
+    "SELECT comment_id
+     FROM comments
+     WHERE comment_id = ? AND user_id = ?
      LIMIT 1"
 );
 if (!$check_stmt) { echo "error"; exit; }

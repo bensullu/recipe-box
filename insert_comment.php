@@ -57,13 +57,13 @@ if (!empty($errors)) {
 }
 
 // Username is forced from the session to prevent impersonation
-$username = $_SESSION["login"];
+$user_id = (int)$_SESSION["user_id"];
 $rating = (int)$rating_raw;
 
 $stmt = $conn->prepare(
-    "INSERT INTO comments (recipe_id, username, rating, content) VALUES (?, ?, ?, ?)"
+    "INSERT INTO comments (recipe_id, user_id, rating, content) VALUES (?, ?, ?, ?)"
 );
-$stmt->bind_param("isis", $recipe_id, $username, $rating, $content);
+$stmt->bind_param("iiis", $recipe_id, $user_id, $rating, $content);
 
 if ($stmt->execute()) {
     $stmt->close();

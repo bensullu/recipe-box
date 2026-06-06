@@ -51,7 +51,9 @@ if ($favorite_stmt) {
 
 // Load comments for this recipe
 $comments_stmt = $conn->prepare(
-    "SELECT username, rating, content, created_at FROM comments WHERE recipe_id = ? ORDER BY created_at DESC"
+    "SELECT u.login AS username, cm.rating, cm.content, cm.created_at
+     FROM comments cm INNER JOIN users u ON u.user_id = cm.user_id
+     WHERE cm.recipe_id = ? ORDER BY cm.created_at DESC"
 );
 $comments_stmt->bind_param("i", $recipe_id);
 $comments_stmt->execute();

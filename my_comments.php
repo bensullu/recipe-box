@@ -10,8 +10,7 @@ $stmt = $conn->prepare(
     "SELECT cm.comment_id, cm.recipe_id, cm.rating, cm.content, cm.created_at, r.title
      FROM comments cm
      INNER JOIN recipes r ON r.recipe_id = cm.recipe_id
-     INNER JOIN users u ON u.login = cm.username
-     WHERE u.user_id = ?
+     WHERE cm.user_id = ?
      ORDER BY cm.created_at DESC"
 );
 $stmt->bind_param("i", $user_id);
@@ -22,8 +21,7 @@ $result = $stmt->get_result();
 $avg_stmt = $conn->prepare(
     "SELECT COUNT(*) AS comment_count, AVG(cm.rating) AS avg_rating
      FROM comments cm
-     INNER JOIN users u ON u.login = cm.username
-     WHERE u.user_id = ?"
+     WHERE cm.user_id = ?"
 );
 $avg_stmt->bind_param("i", $user_id);
 $avg_stmt->execute();
