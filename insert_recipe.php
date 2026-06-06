@@ -5,7 +5,7 @@ require("db.php");
 require("csrf.php");
 
 // Load categories for the dropdown
-$categories_result = $conn->query("SELECT id, name FROM categories ORDER BY name ASC");
+$categories_result = $conn->query("SELECT category_id, name FROM categories ORDER BY name ASC");
 
 // Pick up validation errors and previously entered values from session flash
 $errors = $_SESSION["form_errors"]["recipe_add"] ?? [];
@@ -51,7 +51,7 @@ $difficulties = ["Easy", "Medium", "Hard"];
                 <select id="category_id" name="category_id" required>
                     <option value="">-- select category --</option>
                     <?php while ($c = $categories_result->fetch_assoc()): ?>
-                        <option value="<?= (int)$c["id"] ?>" <?= ((int)($old["category_id"] ?? 0) === (int)$c["id"]) ? "selected" : "" ?>>
+                        <option value="<?= (int)$c["category_id"] ?>" <?= ((int)($old["category_id"] ?? 0) === (int)$c["category_id"]) ? "selected" : "" ?>>
                             <?= h($c["name"]) ?>
                         </option>
                     <?php endwhile; ?>

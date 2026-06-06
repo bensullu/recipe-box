@@ -22,7 +22,7 @@ if ($recipe_id <= 0 || $user_id <= 0) {
 }
 
 // Check whether the favorite already exists for this user and recipe.
-$check_stmt = $conn->prepare("SELECT id FROM favorites WHERE recipe_id = ? AND user_id = ? LIMIT 1");
+$check_stmt = $conn->prepare("SELECT favorite_id FROM favorites WHERE recipe_id = ? AND user_id = ? LIMIT 1");
 if (!$check_stmt) {
     echo "error";
     exit;
@@ -35,9 +35,9 @@ $check_stmt->close();
 
 if ($favorite_row) {
     // Remove the favorite when the record is already present.
-    $delete_stmt = $conn->prepare("DELETE FROM favorites WHERE id = ?");
+    $delete_stmt = $conn->prepare("DELETE FROM favorites WHERE favorite_id = ?");
     if (!$delete_stmt) { echo "error"; exit; }
-    $favorite_id = (int)$favorite_row["id"];
+    $favorite_id = (int)$favorite_row["favorite_id"];
     $delete_stmt->bind_param("i", $favorite_id);
     $delete_ok = $delete_stmt->execute();
     $delete_stmt->close();

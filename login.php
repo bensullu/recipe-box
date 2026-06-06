@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $error = "Please provide both login and password.";
     } else {
         // Look up the user by login (never by password)
-        $stmt = $conn->prepare("SELECT id, login, password, is_admin FROM users WHERE login = ?");
+        $stmt = $conn->prepare("SELECT user_id, login, password, is_admin FROM users WHERE login = ?");
         $stmt->bind_param("s", $login);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if ($row && password_verify($password, $row["password"])) {
             $_SESSION["login"] = $row["login"];
             $_SESSION["is_admin"] = (int)$row["is_admin"];
-            $_SESSION["user_id"] = (int)$row["id"];
+            $_SESSION["user_id"] = (int)$row["user_id"];
 
             header("Location: index.php");
             exit;

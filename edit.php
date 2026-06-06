@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($category_id <= 0) {
         $errors["category_id"] = "Please pick a category.";
     } else {
-        $cat_check = $conn->prepare("SELECT id FROM categories WHERE id = ?");
+        $cat_check = $conn->prepare("SELECT category_id FROM categories WHERE category_id = ?");
         $cat_check->bind_param("i", $category_id);
         $cat_check->execute();
         if ($cat_check->get_result()->num_rows === 0) { $errors["category_id"] = "Selected category does not exist."; }
@@ -76,19 +76,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Remember the old image so we can delete it after a successful swap
         $old_image = null;
         if ($new_image !== null) {
-            $old_img_stmt = $conn->prepare("SELECT image FROM recipes WHERE id = ?");
+            $old_img_stmt = $conn->prepare("SELECT image FROM recipes WHERE recipe_id = ?");
             $old_img_stmt->bind_param("i", $recipe_id);
             $old_img_stmt->execute();
             $old_image = ($old_img_stmt->get_result()->fetch_assoc())["image"] ?? null;
             $old_img_stmt->close();
 
             $stmt = $conn->prepare(
-                "UPDATE recipes SET title = ?, category_id = ?, prep_time = ?, servings = ?, difficulty = ?, ingredients = ?, instructions = ?, image = ? WHERE id = ?"
+                "UPDATE recipes SET title = ?, category_id = ?, prep_time = ?, servings = ?, difficulty = ?, ingredients = ?, instructions = ?, image = ? WHERE recipe_id = ?"
             );
             $stmt->bind_param("siiissssi", $title, $category_id, $prep_time, $servings, $difficulty, $ingredients, $instructions, $new_image, $recipe_id);
         } else {
             $stmt = $conn->prepare(
-                "UPDATE recipes SET title = ?, category_id = ?, prep_time = ?, servings = ?, difficulty = ?, ingredients = ?, instructions = ? WHERE id = ?"
+                "UPDATE recipes SET title = ?, category_id = ?, prep_time = ?, servings = ?, difficulty = ?, ingredients = ?, instructions = ? WHERE recipe_id = ?"
             );
             $stmt->bind_param("siiisssi", $title, $category_id, $prep_time, $servings, $difficulty, $ingredients, $instructions, $recipe_id);
         }
@@ -125,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 
 // Load the current recipe record (first load and after validation)
-$stmt = $conn->prepare("SELECT id, title, category_id, prep_time, servings, difficulty, ingredients, instructions, image FROM recipes WHERE id = ?");
+$stmt = $conn->prepare("SELECT recipe_id, title, category_id, prep_time, servings, difficulty, ingredients, instructions, image FROM recipes WHERE recipe_id = ?");
 $stmt->bind_param("i", $recipe_id);
 $stmt->execute();
 $recipe = $stmt->get_result()->fetch_assoc();
@@ -136,7 +136,7 @@ if (!$recipe) {
     exit;
 }
 
-$categories_result = $conn->query("SELECT id, name FROM categories ORDER BY name ASC");
+$categories_result = $conn->query("SELECT category_id, name FROM categories ORDER BY name ASC");
 
 $values = $old ?? [
     "title" => $recipe["title"],
@@ -170,7 +170,7 @@ $values = $old ?? [
         <?php endif; ?>
 
         <form method="POST" action="edit.php" enctype="multipart/form-data" class="recipe-form" id="recipe-edit-form" novalidate>
-            <input type="hidden" name="id" value="<?= (int)$recipe["id"] ?>">
+            <input type="hidden" name="id" value="<?= (int)$recipe["recipe_id"] ?>">
             <?php csrf_field("recipe_edit_" . $recipe_id); ?>
 
             <div class="field">
@@ -185,7 +185,7 @@ $values = $old ?? [
                 <label for="category_id">Category</label>
                 <select id="category_id" name="category_id" required>
                     <?php while ($c = $categories_result->fetch_assoc()): ?>
-                        <option value="<?= (int)$c["id"] ?>" <?= ((int)$c["id"] === (int)$values["category_id"]) ? "selected" : "" ?>>
+                        <option value="<?= (int)$c["category_id"] ?>" <?= ((int)$c["category_id"] === (int)$values["category_id"]) ? "selected" : "" ?>>
                             <?= h($c["name"]) ?>
                         </option>
                     <?php endwhile; ?>
@@ -246,7 +246,7 @@ $values = $old ?? [
 
             <div class="form-actions">
                 <button type="submit" class="btn primary">Save changes</button>
-                <a href="details.php?id=<?= (int)$recipe["id"] ?>" class="btn">Cancel</a>
+                <a href="details.php?id=<?= (int)$recipe["recipe_id"] ?>" class="btn">Cancel</a>
             </div>
         </form>
     </div>

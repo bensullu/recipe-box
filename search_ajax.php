@@ -26,14 +26,14 @@ $is_admin = !empty($_SESSION["is_admin"]) && (int)$_SESSION["is_admin"] === 1;
 // Match the phrase against title, category name and ingredients
 $search_like = "%" . $search_query . "%";
 $stmt = $conn->prepare(
-    "SELECT r.id, r.title, r.prep_time, r.servings, r.difficulty, c.name AS category, r.image,
+    "SELECT r.recipe_id, r.title, r.prep_time, r.servings, r.difficulty, c.name AS category, r.image,
             ROUND(AVG(cm.rating), 1) AS avg_rating,
-            COUNT(cm.id) AS comment_count
+            COUNT(cm.comment_id) AS comment_count
      FROM recipes r
-     INNER JOIN categories c ON c.id = r.category_id
-     LEFT JOIN comments cm ON cm.recipe_id = r.id
+     INNER JOIN categories c ON c.category_id = r.category_id
+     LEFT JOIN comments cm ON cm.recipe_id = r.recipe_id
      WHERE r.title LIKE ? OR c.name LIKE ? OR r.ingredients LIKE ?
-     GROUP BY r.id
+     GROUP BY r.recipe_id
      ORDER BY r.title ASC"
 );
 

@@ -12,11 +12,11 @@ if ($recipe_id <= 0) {
 
 // Load the recipe (JOIN categories to get the category name + id for the quick-nav link)
 $stmt = $conn->prepare(
-    "SELECT r.id, r.title, r.category_id, c.name AS category, r.prep_time, r.servings,
+    "SELECT r.recipe_id, r.title, r.category_id, c.name AS category, r.prep_time, r.servings,
             r.difficulty, r.ingredients, r.instructions, r.image, r.created_at
      FROM recipes r
-     INNER JOIN categories c ON c.id = r.category_id
-     WHERE r.id = ?"
+     INNER JOIN categories c ON c.category_id = r.category_id
+     WHERE r.recipe_id = ?"
 );
 $stmt->bind_param("i", $recipe_id);
 $stmt->execute();
@@ -40,7 +40,7 @@ $stats_stmt->close();
 
 // Has the current user already favorited this recipe?
 $is_favorite = false;
-$favorite_stmt = $conn->prepare("SELECT id FROM favorites WHERE recipe_id = ? AND user_id = ? LIMIT 1");
+$favorite_stmt = $conn->prepare("SELECT favorite_id FROM favorites WHERE recipe_id = ? AND user_id = ? LIMIT 1");
 if ($favorite_stmt) {
     $user_id = (int)$_SESSION["user_id"];
     $favorite_stmt->bind_param("ii", $recipe_id, $user_id);
@@ -117,7 +117,7 @@ $instruction_lines = array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', $
                 <div class="recipe-actions">
                     <button type="button"
                             class="btn fav-toggle <?php echo $is_favorite ? "is-liked" : ""; ?>"
-                            data-recipe-id="<?php echo (int)$recipe["id"]; ?>"
+                            data-recipe-id="<?php echo (int)$recipe["recipe_id"]; ?>"
                             data-liked="<?php echo $is_favorite ? 1 : 0; ?>"
                             aria-pressed="<?php echo $is_favorite ? "true" : "false"; ?>">
                         <?php echo $is_favorite ? "Remove from favorites" : "Add to favorites"; ?>
@@ -177,7 +177,7 @@ $instruction_lines = array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', $
                 <div class="message error"><?= h($comment_errors["_csrf"]) ?></div>
             <?php endif; ?>
             <form method="POST" action="insert_comment.php" class="review-form" novalidate>
-                <input type="hidden" name="recipe_id" value="<?= (int)$recipe["id"] ?>">
+                <input type="hidden" name="recipe_id" value="<?= (int)$recipe["recipe_id"] ?>">
                 <?php csrf_field("comment_add"); ?>
 
                 <label for="rating">Rating (1-5)</label>

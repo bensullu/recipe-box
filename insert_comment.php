@@ -40,7 +40,7 @@ if ($content === "") {
 if ($recipe_id <= 0) {
     $errors["_db"] = "Invalid recipe.";
 } else {
-    $recipe_check = $conn->prepare("SELECT id FROM recipes WHERE id = ?");
+    $recipe_check = $conn->prepare("SELECT recipe_id FROM recipes WHERE recipe_id = ?");
     $recipe_check->bind_param("i", $recipe_id);
     $recipe_check->execute();
     if ($recipe_check->get_result()->num_rows === 0) {

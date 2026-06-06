@@ -37,7 +37,7 @@ if ($title === "") {
 if ($category_id <= 0) {
     $errors["category_id"] = "Please pick a category.";
 } else {
-    $check_cat = $conn->prepare("SELECT id FROM categories WHERE id = ?");
+    $check_cat = $conn->prepare("SELECT category_id FROM categories WHERE category_id = ?");
     $check_cat->bind_param("i", $category_id);
     $check_cat->execute();
     if ($check_cat->get_result()->num_rows === 0) {

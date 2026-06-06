@@ -10,21 +10,21 @@ $is_admin = !empty($_SESSION["is_admin"]) && (int)$_SESSION["is_admin"] === 1;
 $active_category = isset($_GET["category"]) ? (int)$_GET["category"] : 0;
 
 // Load all categories for the filter bar and dropdown
-$categories = $conn->query("SELECT id, name FROM categories ORDER BY name ASC");
+$categories = $conn->query("SELECT category_id, name FROM categories ORDER BY name ASC");
 
 // Build the recipe query, optionally filtered by category
 $sql =
-    "SELECT r.id, r.title, r.prep_time, r.servings, r.difficulty, c.name AS category, r.image,
+    "SELECT r.recipe_id, r.title, r.prep_time, r.servings, r.difficulty, c.name AS category, r.image,
             ROUND(AVG(cm.rating), 1) AS avg_rating,
-            COUNT(cm.id) AS comment_count
+            COUNT(cm.comment_id) AS comment_count
      FROM recipes r
-     INNER JOIN categories c ON c.id = r.category_id
-     LEFT JOIN comments cm ON cm.recipe_id = r.id";
+     INNER JOIN categories c ON c.category_id = r.category_id
+     LEFT JOIN comments cm ON cm.recipe_id = r.recipe_id";
 
 if ($active_category > 0) {
     $sql .= " WHERE r.category_id = ?";
 }
-$sql .= " GROUP BY r.id ORDER BY r.created_at DESC";
+$sql .= " GROUP BY r.recipe_id ORDER BY r.created_at DESC";
 
 $stmt = $conn->prepare($sql);
 if ($active_category > 0) {
@@ -72,8 +72,8 @@ $result = $stmt->get_result();
         <div class="filter-bar">
             <a href="index.php" class="chip <?php echo $active_category === 0 ? "is-active" : ""; ?>">All</a>
             <?php while ($cat = $categories->fetch_assoc()): ?>
-                <a href="index.php?category=<?php echo (int)$cat["id"]; ?>"
-                   class="chip <?php echo $active_category === (int)$cat["id"] ? "is-active" : ""; ?>">
+                <a href="index.php?category=<?php echo (int)$cat["category_id"]; ?>"
+                   class="chip <?php echo $active_category === (int)$cat["category_id"] ? "is-active" : ""; ?>">
                     <?php echo htmlspecialchars($cat["name"]); ?>
                 </a>
             <?php endwhile; ?>
@@ -87,8 +87,8 @@ $result = $stmt->get_result();
                 <?php
                 $categories->data_seek(0);
                 while ($cat = $categories->fetch_assoc()): ?>
-                    <option value="<?php echo (int)$cat["id"]; ?>"
-                        <?php echo $active_category === (int)$cat["id"] ? "selected" : ""; ?>>
+                    <option value="<?php echo (int)$cat["category_id"]; ?>"
+                        <?php echo $active_category === (int)$cat["category_id"] ? "selected" : ""; ?>>
                         <?php echo htmlspecialchars($cat["name"]); ?>
                     </option>
                 <?php endwhile; ?>

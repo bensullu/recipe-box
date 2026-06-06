@@ -23,10 +23,10 @@ if ($comment_id <= 0 || $user_id <= 0) {
 
 // Confirm that this comment belongs to the current user before deleting it.
 $check_stmt = $conn->prepare(
-    "SELECT cm.id
+    "SELECT cm.comment_id
      FROM comments cm
      INNER JOIN users u ON u.login = cm.username
-     WHERE cm.id = ? AND u.id = ?
+     WHERE cm.comment_id = ? AND u.user_id = ?
      LIMIT 1"
 );
 if (!$check_stmt) { echo "error"; exit; }
@@ -41,7 +41,7 @@ if (!$comment_exists) {
     exit;
 }
 
-$delete_stmt = $conn->prepare("DELETE FROM comments WHERE id = ?");
+$delete_stmt = $conn->prepare("DELETE FROM comments WHERE comment_id = ?");
 if (!$delete_stmt) { echo "error"; exit; }
 $delete_stmt->bind_param("i", $comment_id);
 $delete_ok = $delete_stmt->execute();

@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (empty($errors)) {
         // Check whether the login is already taken
-        $check = $conn->prepare("SELECT id FROM users WHERE login = ?");
+        $check = $conn->prepare("SELECT user_id FROM users WHERE login = ?");
         $check->bind_param("s", $login);
         $check->execute();
         $check->store_result();

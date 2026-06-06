@@ -11,7 +11,7 @@ if ($recipe_id <= 0) {
 }
 
 // Remove the photo file from disk if one is associated with the recipe
-$stmt = $conn->prepare("SELECT image FROM recipes WHERE id = ?");
+$stmt = $conn->prepare("SELECT image FROM recipes WHERE recipe_id = ?");
 $stmt->bind_param("i", $recipe_id);
 $stmt->execute();
 $row = $stmt->get_result()->fetch_assoc();
@@ -22,7 +22,7 @@ if ($row && !empty($row["image"]) && file_exists("images/" . $row["image"])) {
 }
 
 // Delete recipe (cascading FK removes related comments and favorites)
-$stmt = $conn->prepare("DELETE FROM recipes WHERE id = ?");
+$stmt = $conn->prepare("DELETE FROM recipes WHERE recipe_id = ?");
 $stmt->bind_param("i", $recipe_id);
 $stmt->execute();
 $stmt->close();

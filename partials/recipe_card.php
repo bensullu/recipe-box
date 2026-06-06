@@ -38,10 +38,10 @@ if (!isset($is_admin)) {
         </p>
     </div>
     <div class="recipe-card-actions">
-        <a href="details.php?id=<?php echo (int)$recipe["id"]; ?>" class="btn primary">View</a>
+        <a href="details.php?id=<?php echo (int)$recipe["recipe_id"]; ?>" class="btn primary">View</a>
         <?php if ($is_admin): ?>
-            <a href="edit.php?id=<?php echo (int)$recipe["id"]; ?>" class="btn warning">Edit</a>
-            <a href="delete.php?id=<?php echo (int)$recipe["id"]; ?>"
+            <a href="edit.php?id=<?php echo (int)$recipe["recipe_id"]; ?>" class="btn warning">Edit</a>
+            <a href="delete.php?id=<?php echo (int)$recipe["recipe_id"]; ?>"
                class="btn danger"
                onclick="return confirm('Delete this recipe?');">Delete</a>
         <?php endif; ?>

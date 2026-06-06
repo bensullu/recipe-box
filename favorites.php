@@ -7,15 +7,15 @@ $is_admin = !empty($_SESSION["is_admin"]) && (int)$_SESSION["is_admin"] === 1;
 $user_id = (int)$_SESSION["user_id"];
 
 $stmt = $conn->prepare(
-    "SELECT r.id, r.title, r.prep_time, r.servings, r.difficulty, c.name AS category, r.image,
+    "SELECT r.recipe_id, r.title, r.prep_time, r.servings, r.difficulty, c.name AS category, r.image,
             ROUND(AVG(cm.rating), 1) AS avg_rating,
-            COUNT(cm.id) AS comment_count
+            COUNT(cm.comment_id) AS comment_count
      FROM favorites fav
-     INNER JOIN recipes r ON r.id = fav.recipe_id
-     INNER JOIN categories c ON c.id = r.category_id
-     LEFT JOIN comments cm ON cm.recipe_id = r.id
+     INNER JOIN recipes r ON r.recipe_id = fav.recipe_id
+     INNER JOIN categories c ON c.category_id = r.category_id
+     LEFT JOIN comments cm ON cm.recipe_id = r.recipe_id
      WHERE fav.user_id = ?
-     GROUP BY r.id
+     GROUP BY r.recipe_id
      ORDER BY r.title ASC"
 );
 $stmt->bind_param("i", $user_id);
@@ -42,7 +42,7 @@ $has_favorites = $result && $result->num_rows > 0;
         <?php if ($has_favorites): ?>
             <section class="recipe-grid" id="favorites-grid">
                 <?php while ($recipe = $result->fetch_assoc()): ?>
-                    <article class="recipe-card" id="favorite-<?php echo (int)$recipe["id"]; ?>" data-favorite-item="1">
+                    <article class="recipe-card" id="favorite-<?php echo (int)$recipe["recipe_id"]; ?>" data-favorite-item="1">
                         <div class="recipe-card-photo">
                             <?php if (!empty($recipe["image"]) && file_exists("images/" . $recipe["image"])): ?>
                                 <img src="images/<?php echo htmlspecialchars($recipe["image"]); ?>" alt="<?php echo htmlspecialchars($recipe["title"]); ?>">
@@ -70,10 +70,10 @@ $has_favorites = $result && $result->num_rows > 0;
                             </p>
                         </div>
                         <div class="recipe-card-actions">
-                            <a href="details.php?id=<?php echo (int)$recipe["id"]; ?>" class="btn primary">View</a>
+                            <a href="details.php?id=<?php echo (int)$recipe["recipe_id"]; ?>" class="btn primary">View</a>
                             <button type="button"
                                     class="btn fav-toggle is-liked"
-                                    data-recipe-id="<?php echo (int)$recipe["id"]; ?>"
+                                    data-recipe-id="<?php echo (int)$recipe["recipe_id"]; ?>"
                                     data-liked="1"
                                     aria-pressed="true">
                                 Remove
