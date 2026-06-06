@@ -1,0 +1,6 @@
+# Recipe photos are kept in the repository (seed/demo content).
+
+# OS / editor junk
+Thumbs.db
+.DS_Store
+*.log
