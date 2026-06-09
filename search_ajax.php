@@ -8,12 +8,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 header("Content-Type: text/html; charset=UTF-8");
 
-if (!isset($_SESSION["user_id"])) {
-    http_response_code(403);
-    echo "<p class=\"message error\">Please log in again.</p>";
-    exit;
-}
-
+// Public: guests can search too (no login required).
 $search_query = trim($_GET["search_query"] ?? "");
 
 if (mb_strlen($search_query) < 2) {

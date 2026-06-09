@@ -1,9 +1,10 @@
 <?php
 // Recipe details with ingredients, instructions, comments and a comment form
-require("session.php");
+require("session_optional.php");
 require("db.php");
 
 $is_admin = !empty($_SESSION["is_admin"]) && (int)$_SESSION["is_admin"] === 1;
+$logged_in = isset($_SESSION["user_id"]);
 $recipe_id = isset($_GET["id"]) ? (int)$_GET["id"] : 0;
 
 if ($recipe_id <= 0) {
@@ -41,8 +42,8 @@ $stats_stmt->close();
 
 // Has the current user already favorited this recipe?
 $is_favorite = false;
-$favorite_stmt = $conn->prepare("SELECT favorite_id FROM favorites WHERE recipe_id = ? AND user_id = ? LIMIT 1");
-if ($favorite_stmt) {
+if ($logged_in) {
+    $favorite_stmt = $conn->prepare("SELECT favorite_id FROM favorites WHERE recipe_id = ? AND user_id = ? LIMIT 1");
     $user_id = (int)$_SESSION["user_id"];
     $favorite_stmt->bind_param("ii", $recipe_id, $user_id);
     $favorite_stmt->execute();
@@ -118,13 +119,17 @@ $instruction_lines = array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', $
                 <?php endif; ?>
 
                 <div class="recipe-actions">
-                    <button type="button"
-                            class="btn fav-toggle <?php echo $is_favorite ? "is-liked" : ""; ?>"
-                            data-recipe-id="<?php echo (int)$recipe["recipe_id"]; ?>"
-                            data-liked="<?php echo $is_favorite ? 1 : 0; ?>"
-                            aria-pressed="<?php echo $is_favorite ? "true" : "false"; ?>">
-                        <?php echo $is_favorite ? "Remove from favorites" : "Add to favorites"; ?>
-                    </button>
+                    <?php if ($logged_in): ?>
+                        <button type="button"
+                                class="btn fav-toggle <?php echo $is_favorite ? "is-liked" : ""; ?>"
+                                data-recipe-id="<?php echo (int)$recipe["recipe_id"]; ?>"
+                                data-liked="<?php echo $is_favorite ? 1 : 0; ?>"
+                                aria-pressed="<?php echo $is_favorite ? "true" : "false"; ?>">
+                            <?php echo $is_favorite ? "Remove from favorites" : "Add to favorites"; ?>
+                        </button>
+                    <?php else: ?>
+                        <a href="login.php" class="btn">Log in to save this recipe</a>
+                    <?php endif; ?>
                 </div>
             </div>
         </article>
@@ -175,6 +180,7 @@ $instruction_lines = array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', $
                 <p>No comments yet. Be the first to add one.</p>
             <?php endif; ?>
 
+            <?php if ($logged_in): ?>
             <h3>Add your comment</h3>
             <?php
             require_once("csrf.php");
@@ -203,6 +209,9 @@ $instruction_lines = array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', $
             </form>
             <p class="hint">Your comment will be signed automatically as
                 <strong><?= h($_SESSION["login"]) ?></strong>.</p>
+            <?php else: ?>
+            <p class="hint"><a href="login.php">Log in</a> or <a href="registration.php">create an account</a> to leave a comment and rating.</p>
+            <?php endif; ?>
         </section>
     </div>
 

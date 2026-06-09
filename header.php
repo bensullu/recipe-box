@@ -13,16 +13,21 @@ function nav_active($page, $current) {
             <a href="index.php">🍳 Recipe Box</a>
         </div>
         <nav class="main-nav">
-            <span class="welcome">Hi, <strong><?php echo htmlspecialchars($current_login); ?></strong>!</span>
             <a href="index.php" class="nav-link<?php echo nav_active('index.php', $current_page); ?>">Home</a>
-            <a href="favorites.php" class="nav-link<?php echo nav_active('favorites.php', $current_page); ?>">Favorites</a>
-            <a href="my_comments.php" class="nav-link<?php echo nav_active('my_comments.php', $current_page); ?>">My comments</a>
-            <?php if ($is_admin): ?>
-                <a href="admin.php" class="nav-link admin-link<?php echo nav_active('admin.php', $current_page); ?>">Dashboard</a>
-                <a href="insert_recipe.php" class="nav-link admin-link<?php echo nav_active('insert_recipe.php', $current_page); ?>">Add recipe</a>
-                <span class="badge">admin</span>
+            <?php if ($current_login !== ""): ?>
+                <a href="favorites.php" class="nav-link<?php echo nav_active('favorites.php', $current_page); ?>">Favorites</a>
+                <a href="my_comments.php" class="nav-link<?php echo nav_active('my_comments.php', $current_page); ?>">My comments</a>
+                <?php if ($is_admin): ?>
+                    <a href="admin.php" class="nav-link admin-link<?php echo nav_active('admin.php', $current_page); ?>">Dashboard</a>
+                    <a href="insert_recipe.php" class="nav-link admin-link<?php echo nav_active('insert_recipe.php', $current_page); ?>">Add recipe</a>
+                    <span class="badge">admin</span>
+                <?php endif; ?>
+                <span class="welcome">Hi, <strong><?php echo htmlspecialchars($current_login); ?></strong>!</span>
+                <a href="logout.php" class="nav-link logout">Logout</a>
+            <?php else: ?>
+                <a href="login.php" class="nav-link<?php echo nav_active('login.php', $current_page); ?>">Login</a>
+                <a href="registration.php" class="nav-link admin-link<?php echo nav_active('registration.php', $current_page); ?>">Register</a>
             <?php endif; ?>
-            <a href="logout.php" class="nav-link logout">Logout</a>
         </nav>
     </div>
 </header>
