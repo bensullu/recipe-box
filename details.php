@@ -1,6 +1,7 @@
 <?php
 // Recipe details with ingredients, instructions, comments and a comment form
-require("session_optional.php");
+// Public page: start the session if needed, but do not force login (guests may browse).
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
 require("db.php");
 
 $is_admin = !empty($_SESSION["is_admin"]) && (int)$_SESSION["is_admin"] === 1;

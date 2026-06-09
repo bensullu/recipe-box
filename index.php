@@ -1,7 +1,8 @@
 <?php
 // Recipe list - main page available to all logged-in users.
 // Supports live AJAX search and category filtering (via links AND a dropdown).
-require("session_optional.php");
+// Public page: start the session if needed, but do not force login (guests may browse).
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
 require("db.php");
 
 $is_admin = !empty($_SESSION["is_admin"]) && (int)$_SESSION["is_admin"] === 1;
