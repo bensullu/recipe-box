@@ -150,4 +150,34 @@
                 $button.prop("disabled", false);
             });
     });
+    // Admin moderation: delete ANY comment from the details page (AJAX).
+    $(document).on("click", ".mod-delete-comment", function () {
+        var $button = $(this);
+        var commentId = parseInt($button.attr("data-comment-id"), 10);
+        var $item = $button.closest("[data-comment-item='1']");
+
+        if (!commentId || $button.prop("disabled")) {
+            return;
+        }
+        if (!window.confirm("Delete this comment?")) {
+            return;
+        }
+
+        $button.prop("disabled", true);
+
+        $.post("admin_delete_comment.php", { comment_id: commentId })
+            .done(function (response) {
+                if (String(response).trim() !== "ok") {
+                    window.alert("Could not delete the comment.");
+                    return;
+                }
+                $item.fadeOut(300, function () { $(this).remove(); });
+            })
+            .fail(function () {
+                window.alert("Could not delete the comment.");
+            })
+            .always(function () {
+                $button.prop("disabled", false);
+            });
+    });
 }(jQuery));

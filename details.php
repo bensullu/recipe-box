@@ -3,6 +3,7 @@
 require("session.php");
 require("db.php");
 
+$is_admin = !empty($_SESSION["is_admin"]) && (int)$_SESSION["is_admin"] === 1;
 $recipe_id = isset($_GET["id"]) ? (int)$_GET["id"] : 0;
 
 if ($recipe_id <= 0) {
@@ -51,7 +52,7 @@ if ($favorite_stmt) {
 
 // Load comments for this recipe
 $comments_stmt = $conn->prepare(
-    "SELECT u.login AS username, cm.rating, cm.content, cm.created_at
+    "SELECT cm.comment_id, u.login AS username, cm.rating, cm.content, cm.created_at
      FROM comments cm INNER JOIN users u ON u.user_id = cm.user_id
      WHERE cm.recipe_id = ? ORDER BY cm.created_at DESC"
 );
@@ -154,11 +155,17 @@ $instruction_lines = array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', $
             <?php if ($comments_result && $comments_result->num_rows > 0): ?>
                 <ul class="reviews-list">
                     <?php while ($comment = $comments_result->fetch_assoc()): ?>
-                        <li class="review-item">
+                        <li class="review-item" id="comment-<?php echo (int)$comment["comment_id"]; ?>" data-comment-item="1">
                             <div class="review-head">
                                 <strong><?php echo htmlspecialchars($comment["username"]); ?></strong>
                                 <span class="rating"><?php echo str_repeat("★", (int)$comment["rating"]) . str_repeat("☆", 5 - (int)$comment["rating"]); ?></span>
                                 <span class="date"><?php echo htmlspecialchars($comment["created_at"]); ?></span>
+                                <?php if ($is_admin): ?>
+                                    <div class="review-actions">
+                                        <button type="button" class="btn danger small mod-delete-comment"
+                                                data-comment-id="<?php echo (int)$comment["comment_id"]; ?>">Delete</button>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                             <p><?php echo nl2br(htmlspecialchars($comment["content"])); ?></p>
                         </li>

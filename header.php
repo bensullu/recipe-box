@@ -18,6 +18,7 @@ function nav_active($page, $current) {
             <a href="favorites.php" class="nav-link<?php echo nav_active('favorites.php', $current_page); ?>">Favorites</a>
             <a href="my_comments.php" class="nav-link<?php echo nav_active('my_comments.php', $current_page); ?>">My comments</a>
             <?php if ($is_admin): ?>
+                <a href="admin.php" class="nav-link admin-link<?php echo nav_active('admin.php', $current_page); ?>">Dashboard</a>
                 <a href="insert_recipe.php" class="nav-link admin-link<?php echo nav_active('insert_recipe.php', $current_page); ?>">Add recipe</a>
                 <span class="badge">admin</span>
             <?php endif; ?>
