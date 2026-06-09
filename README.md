@@ -34,10 +34,12 @@ Full project documentation is in [`docs/dokumentacja.md`](docs/dokumentacja.md).
 
 1. Copy this folder into `C:\xampp\htdocs\recipes`.
 2. Start **Apache** and **MySQL** in the XAMPP Control Panel.
-3. Import the database: open `http://localhost/phpmyadmin` → SQL tab → paste the
-   contents of `setup.sql` and run it (creates the `recipe_box` database with sample data).
+3. Import the database in `http://localhost/phpmyadmin` → **Import** tab:
+   - **`recipe_box.sql`** — full database with all sample recipes, users and comments (recommended), **or**
+   - **`setup.sql`** — empty schema only (tables, no data).
 4. Open `http://localhost/recipes/` in your browser.
-5. Register an account (e.g. `admin`), then make it an administrator:
+5. A ready administrator account is included: **login `admin`, password `admin123`**.
+   (To promote another account instead: `UPDATE users SET is_admin = 1 WHERE login = 'your_login';`)
    ```sql
    UPDATE users SET is_admin = 1 WHERE login = 'admin';
    ```
