@@ -19,7 +19,11 @@ responsive CSS.
 - **Favorites** — add/remove via AJAX, dedicated "My favorites" page.
 - **Comments & 1–5 star ratings**; users can delete their own comments via AJAX.
 - CSRF protection on all state-changing forms, server-side + client-side validation.
+- **Admin dashboard** (`admin.php`): site statistics, most-favorited recipes, category management and user management.
+- **Comment moderation**: admins can delete any comment from a recipe page via AJAX.
 - Shared layout (`header.php`) and a consistent graphic theme.
+
+Full project documentation is in [`docs/dokumentacja.md`](docs/dokumentacja.md).
 
 ## Database (5 tables)
 

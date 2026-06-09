@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>dokumentacja.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="recipe-box--a-turkish-recipe-sharing-web-application">Recipe Box — A Turkish Recipe Sharing Web Application</h1>
+<p><strong>University of Siedlce — Faculty of Exact and Natural Sciences — Computer Science</strong>
+<strong>Subject:</strong> Fundamentals of Web Technologies (Podstawy Technologii WWW)</p>
+<p><strong>Author:</strong> Süleyman Efe Metik, Erasmus exchange student, Computer Science
+<strong>Supervisor:</strong> Wojciech Nabiałek
+<strong>Subject coordinator:</strong> Waldemar Bartyna
+<strong>Siedlce, academic year 2025/2026, summer semester</strong></p>
+<hr>
+<h2 id="table-of-contents">Table of contents</h2>
+<ol>
+<li>Project goal</li>
+<li>GitHub repository</li>
+<li>Installation and running</li>
+<li>List of functionalities</li>
+<li>Security</li>
+<li>Presentation of the application</li>
+<li>Database table diagram</li>
+</ol>
+<hr>
+<h2 id="1-project-goal">1. Project goal</h2>
+<p>The goal of this project was to design and implement a fully functional recipe-sharing web application dedicated to Turkish cuisine. The application, called <strong>Recipe Box</strong>, lets users create an account, browse a catalogue of recipes, search and filter them, save their favourites, and share their opinions through comments and star ratings.</p>
+<p>The system distinguishes between regular users and administrators. Regular users can browse, search, favourite and comment on recipes, while administrators additionally manage the recipe catalogue — adding, editing and deleting recipes together with their photos. The application was built with PHP and a MySQL database using prepared statements, server- and client-side validation, CSRF protection and asynchronous (AJAX) requests, and it is fully responsive.</p>
+<p><strong>Division of work:</strong> the project was carried out individually, therefore no division of work applies.</p>
+<h2 id="2-github-repository">2. GitHub repository</h2>
+<p>The complete source code of the application is available in the following public repository:</p>
+<p><strong>https://github.com/bensullu/recipe-box</strong></p>
+<h2 id="3-installation-and-running">3. Installation and running</h2>
+<p><strong>Requirements:</strong> XAMPP (Apache + MySQL/MariaDB) with PHP 8 or newer.</p>
+<ol>
+<li>Copy the project into <code>C:\xampp\htdocs\recipes</code>, or clone it: <code>git clone https://github.com/bensullu/recipe-box.git</code></li>
+<li>Start <strong>Apache</strong> and <strong>MySQL</strong> in the XAMPP Control Panel.</li>
+<li>Create the database: open <code>http://localhost/phpmyadmin</code>, go to the <strong>SQL</strong> tab, paste the contents of <code>setup.sql</code> and run it (this creates the <code>recipe_box</code> database with all tables).</li>
+<li>Open the application at <code>http://localhost/recipes/</code>.</li>
+<li>Register an account, then grant it administrator rights by running in phpMyAdmin: <code>UPDATE users SET is_admin = 1 WHERE login = 'your_login';</code></li>
+<li>Log back in — you can now add, edit and delete recipes. Uploaded photos are stored in the <code>images/</code> folder.</li>
+</ol>
+<h2 id="4-list-of-functionalities">4. List of functionalities</h2>
+<p>The developed application allows the following:</p>
+<ul>
+<li>registration and login of users (passwords stored as bcrypt hashes), and logout;</li>
+<li>a role division into a regular user and an administrator;</li>
+</ul>
+<p>A <strong>regular user</strong> can:</p>
+<ul>
+<li>browse the list of recipes and open a recipe details page;</li>
+<li>search recipes by phrase with a live AJAX search (title, category, ingredients);</li>
+<li>filter recipes by category, both through links and a drop-down list;</li>
+<li>add recipes to favourites and remove them asynchronously (AJAX);</li>
+<li>add a comment with a 1–5 star rating and delete their own comments (AJAX).</li>
+</ul>
+<p>An <strong>administrator</strong> can additionally:</p>
+<ul>
+<li>add new recipes together with a photo upload;</li>
+<li>edit existing recipes, including replacing the photo;</li>
+<li>delete recipes (related comments and favourites are removed automatically);</li>
+<li>open an <strong>admin dashboard</strong> with site statistics (recipes, users, comments, average rating) and the most-favorited recipes;</li>
+<li><strong>manage categories</strong> — add and delete categories;</li>
+<li><strong>manage users</strong> — grant or revoke administrator rights and delete users;</li>
+<li><strong>moderate comments</strong> — delete any comment directly from the recipe page via AJAX.</li>
+</ul>
+<p>Other features:</p>
+<ul>
+<li>uploading and displaying recipe photos;</li>
+<li>quick in-app navigation (a category name on a recipe page links to the filtered list);</li>
+<li>a shared page layout (header/footer) and a consistent, responsive graphic style.</li>
+</ul>
+<h2 id="5-security">5. Security</h2>
+<p>Security was treated as a first-class concern throughout the application:</p>
+<ul>
+<li><strong>Password hashing</strong> — user passwords are never stored in plain text; they are hashed with bcrypt (<code>password_hash</code> / <code>password_verify</code>).</li>
+<li><strong>SQL injection protection</strong> — every database query uses prepared statements with bound parameters (<code>mysqli</code> <code>bind_param</code>); no user input is concatenated into SQL.</li>
+<li><strong>XSS protection</strong> — all user-supplied data is escaped with <code>htmlspecialchars()</code> before being printed in HTML.</li>
+<li><strong>CSRF protection</strong> — every state-changing form (add/edit recipe, add comment) carries a random per-form token that is verified on the server.</li>
+<li><strong>Authentication &amp; authorization</strong> — access is session-based; administrator-only pages are protected by a guard, and the role is checked via the <code>is_admin</code> flag.</li>
+<li><strong>Server-side validation</strong> — all input is validated on the server in addition to the HTML5/JavaScript checks, so the client is never trusted.</li>
+<li><strong>Secure file uploads</strong> — uploaded photos are checked for MIME type and allowed extensions and saved under unique, generated file names.</li>
+<li><strong>Impersonation &amp; ownership</strong> — a comment's author is taken from the session (<code>user_id</code>), never from the form, and users can only delete their own comments.</li>
+<li><strong>No information leakage</strong> — raw database errors are logged on the server and never shown to the user.</li>
+</ul>
+<h2 id="6-presentation-of-the-application">6. Presentation of the application</h2>
+<p><img src="images/login.png" alt="Login screen">
+<em>Figure 1. The login screen. New visitors can create an account from the registration page; passwords are validated and stored as bcrypt hashes.</em></p>
+<p><img src="images/index.png" alt="Home page">
+<em>Figure 2. The home page: a hero banner, a live search box, category filters (links and a drop-down) and a responsive grid of recipe cards with photos, difficulty tags and average star ratings.</em></p>
+<p><img src="images/details.png" alt="Recipe details">
+<em>Figure 3. A recipe details page showing the photo, the ingredient list, numbered preparation steps and the comments section with users' star ratings.</em></p>
+<p><img src="images/addrecipe.png" alt="Add recipe form">
+<em>Figure 4. The administrator form for adding a new recipe — title, category, preparation time, servings, difficulty, ingredients, instructions and a photo upload.</em></p>
+<p><img src="images/favorites.png" alt="Favourites">
+<em>Figure 5. The favourites page, listing the recipes saved by the currently logged-in user.</em></p>
+<p><img src="images/admin.png" alt="Admin dashboard">
+<em>Figure 6. The admin dashboard — site statistics, most-favorited recipes, category management and user management. Administrators can also moderate (delete) any comment from a recipe page via AJAX.</em></p>
+<h2 id="7-database-table-diagram">7. Database table diagram</h2>
+<p>The database consists of five related tables: <strong>users</strong>, <strong>categories</strong>, <strong>recipes</strong>, <strong>comments</strong> and <strong>favorites</strong>. The diagram below shows the tables, their columns and the foreign-key relationships between them.</p>
+<p><img src="images/diagram.png" alt="Table diagram">
+<em>Figure 7. Entity–relationship diagram of the recipe_box database (generated from phpMyAdmin).</em></p>
+
+</body>
+</html>
